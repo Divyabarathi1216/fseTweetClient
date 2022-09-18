@@ -1,0 +1,62 @@
+<!-- Post and update tweet -->
+<div *ngIf="!isReply">
+    <form #f="ngForm" (ngSubmit)="post()">
+        <div *ngIf="!isUpdate">
+            <h4>Post your tweet</h4>
+        </div>
+        <div *ngIf="isUpdate">
+            <h4>Update your tweet</h4>
+        </div>
+        <br>
+        <div class="form-group">    
+            <textarea type="textarea" class="form-control" id="newTweet" placeholder="enter your tweet (max 144)" name="newTweet"
+            row="2" cols="50"
+            required
+            maxlength="144"
+            [(ngModel)]="tweet.tweet"
+            #tweetVal="ngModel"> </textarea> 
+            <span class="alertMsg" *ngIf="!tweetVal.valid && tweetVal.touched">Please enter your tweet(It should be max 144 characters).</span>                
+        </div>
+        <div class="form-group">         
+            <input type="text" class="form-control" id="tag" placeholder="enter tags(max 50)" name="tagVal"
+            maxlength="50"
+            [(ngModel)]="tweet.tag"
+            #tagVal="ngModel">   
+            <span class="alertMsg" *ngIf="!tagVal.valid && tagVal.touched">It should be max 50 characters.</span>              
+        </div>
+        <br>
+        <button *ngIf="!isUpdate" type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Post</button>
+        <button *ngIf="isUpdate" type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Update</button>
+        <button *ngIf="isReply" type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Reply</button>
+        <br>   
+    </form>  
+</div>
+
+<!-- Reply Tweet -->
+<div>
+    <form #f="ngForm" (ngSubmit)="reply()" *ngIf="isReply">
+        <div>
+            <h4>Reply to tweet</h4>
+        </div>
+        <br>
+        <div class="form-group">    
+            <textarea type="textarea" class="form-control" id="newTweet" placeholder="enter your tweet (max 144)" name="newTweet"
+            row="2" cols="50"
+            required
+            maxlength="144"
+            [(ngModel)]="replyModel.replyTweet"
+            #tweetVal="ngModel"> </textarea> 
+            <span class="alertMsg" *ngIf="!tweetVal.valid && tweetVal.touched">Please enter your tweet(It should be max 144 characters).</span>                
+        </div>
+        <div class="form-group">         
+            <input type="text" class="form-control" id="tag" placeholder="enter tags(max 50)" name="tagVal"
+            maxlength="50"
+            [(ngModel)]="replyModel.tag"
+            #tagVal="ngModel">   
+            <span class="alertMsg" *ngIf="!tagVal.valid && tagVal.touched">It should be max 50 characters.</span>              
+        </div>
+        <br>
+        <button type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Reply</button>
+        <br>   
+    </form>  
+</div>

@@ -1,0 +1,93 @@
+<div class="row user-reg">
+    <div class="col-4">
+        <img src="/assets/Images/Tweet-bird.jpg" height="300px" width="300px" alt="logo">
+    </div>
+    <div class="col-8 row reg-form">
+        <div class="col-10">
+            <form #f="ngForm" (ngSubmit)="UserRegister()">
+                <div>
+                    <h4>Create your Account</h4>
+                </div>
+                <br>
+                <div class="form-group row">   
+                    <div class="col-6">
+                        <input type="text" class="form-control input-sm" id="firstName" placeholder="enter your first name" name="fName"
+                        required
+                        [(ngModel)]="userToCreate.firstName"
+                        #fName="ngModel"> 
+                        <span class="alertMsg" *ngIf="!fName.valid && fName.touched">Please enter a valid first name.</span>   
+                    </div> 
+                    <div class="col-6">
+                        <input type="text" class="form-control input-sm" id="lastName" placeholder="enter your last name" name="lName"
+                        required
+                        [(ngModel)]="userToCreate.lastName"
+                        #lName="ngModel"> 
+                        <span class="alertMsg" *ngIf="!lName.valid && lName.touched">Please enter a valid last name.</span> 
+                    </div>                   
+                </div>
+                <div class="form-group row">   
+                    <div class="col-6">
+                        <input type="text" class="form-control input-sm" id="emailId" placeholder="enter your email id" name="emailId"
+                        required
+                        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                        [(ngModel)]="userToCreate.emailId"
+                        #email="ngModel"
+                        (change)="isUniqueMail()"> 
+                        <span class="alertMsg" *ngIf="!email.valid && email.touched">Please enter a valid email.</span> 
+                    </div> 
+                    <div class="col-6">
+                        <input type="number" class="form-control input-sm" id="contactNo" placeholder="enter your contact number" name="contact"
+                        required
+                        pattern="[7-9]{1}[0-9]{9}"
+                        [(ngModel)]="userToCreate.contactNo"
+                        #contact="ngModel"> 
+                        <span class="alertMsg" *ngIf="!contact.valid && contact.touched">Please enter a valid contact number.</span> 
+                    </div>                   
+                </div>
+                <div class="form-group row">   
+                    <div class="col-6">
+                        <input type="text" class="form-control input-sm" id="loginId" placeholder="enter your login id" name="loginId"
+                        required
+                        [(ngModel)]="userToCreate. loginId"
+                        #login_id="ngModel"
+                        (change)="isUniqueLoginId()"> 
+                        <span class="alertMsg" *ngIf="!login_id.valid && login_id.touched">Please enter valid login id.</span>   
+                    </div> 
+                    <div class="col-6">
+                        <input type="password" class="form-control input-sm" id="password" placeholder="enter your password" name="passowrd"
+                        required
+                        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                        [(ngModel)]="userToCreate.password"
+                        #pwd="ngModel"> 
+                        <span class="alertMsg" *ngIf="!pwd.valid && pwd.touched">Please enter valid password(It should contain atleast 8 characters with lowercase, uppercase and number).</span>   
+                    </div>                   
+                </div>
+                <div class="form-group row">   
+                    <div class="col-6">
+                        <input type="password" class="form-control input-sm" id="cpassword" placeholder="confirm passowrd" name="cpassword"
+                        required
+                        [(ngModel)]="cPwd"
+                        #conPwd="ngModel"> 
+                        <span class="alertMsg" *ngIf="!conPwd.valid && conPwd.touched">Please enter a valid confirm password.</span> 
+                    </div> 
+                    <div class="col-6">
+                        <input type="file" class="form-control input-sm" id="lastName"  name="profilePic"
+                         required
+                        (change)="onChange($event)" >
+                       
+                        <!-- <span class="alertMsg" *ngIf="!profile.valid && profile.touched">Please select your profile picture.</span>  -->
+                       <!-- [(ngModel)]="userToCreate.picture" -->
+                    </div>                   
+                </div>
+                <br>
+                    <button type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid" >Register</button>            
+            </form>  
+        </div>
+        <div class="col-2" *ngIf="profileImg">
+            <img [src]="profileImg | async" height="150" width="120" alt="profile">
+        </div>
+        
+    </div>
+    
+</div>
+

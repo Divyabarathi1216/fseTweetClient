@@ -1,0 +1,86 @@
+<div class="row login-model" >
+    <div class="offset-1 col-6">
+       <img src="/assets/Images/Tweet-bird.jpg" alt="logo">
+    </div>
+    <div class="col-4 login-form" *ngIf="!showForgotPwd">
+        <div class="text-center">
+            <form #f="ngForm" (ngSubmit)="UserLogin()">
+                <div>
+                    <h4 class="text-white">Login</h4>
+                </div>
+                
+                <br>
+                <div class="form-group">    
+                    <input type="text" class="form-control input-sm" id="loginId" placeholder="enter your login id" name="loginId"
+                    [(ngModel)]="loginId"
+                    #login_id="ngModel"
+                    required>      
+                    <span class="alertMsg" *ngIf="!login_id.valid && login_id.touched">Please enter valid login id.</span>             
+                </div>
+                <br>
+                <div class="form-group">         
+                    <input type="password" class="form-control input-sm" id="pwd" placeholder="enter your password" name="pwd"
+                    [(ngModel)]="password"
+                    #pwd="ngModel"
+                    required>      
+                    <span class="alertMsg" *ngIf="!pwd.valid && pwd.touched">Please enter valid password.</span>          
+                </div>
+                <div class="text-right">
+                    <a href="#" (click)="enableForgotPwd()"><small>forgot password?</small></a>
+                </div>
+                <br>
+                    <button type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Login</button>            
+            </form>  
+            <br>
+            <div class="row">
+                <div>
+                    <p>Don't have an account? <a href="#" routerLink="register">Create account</a></p>
+                </div>
+                <div>
+
+                </div>
+            </div>     
+        </div>    
+    </div>
+    <!-- forgot password -->
+    <div class="col-4 login-form" *ngIf="showForgotPwd">
+        <form #f="ngForm">
+            <div>
+                <h4 class="text-white text-center">Create new password</h4>
+            </div>
+            <br>
+            <div class="form-group">    
+                <input type="text" class="form-control input-sm" id="loginId" placeholder="enter your login id" name="aadhaarno"
+                [(ngModel)]="loginId"
+                (change)="isLoginIdExist()"
+                #login_id="ngModel"
+                required>
+                <span class="alertMsg" *ngIf="!login_id.valid && login_id.touched">Please enter valid login id.</span>                   
+            </div>
+            <div class="form-group">         
+                <input type="password" class="form-control input-sm" id="pwd" placeholder="enter your password" name="pwd"
+                [(ngModel)]="password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                #pwd="ngModel"
+                required>  
+                <span class="alertMsg" *ngIf="!pwd.valid && pwd.touched">Please enter valid password(It should contain atleast 8 characters with lowercase, uppercase and number).</span>                  
+            </div>
+            <div class="form-group">         
+                <input type="password" class="form-control input-sm" id="cPwd" placeholder="confirm your password" name="cpwd"
+                [(ngModel)]="conPwd"
+                (change)="IsPwdAndCpwdSame()"
+                #cPwd="ngModel"
+                required>   
+                <span class="alertMsg" *ngIf="!cPwd.valid && cPwd.touched">Please enter valid confirm password.</span>             
+            </div>
+            <br>
+            <button type="submit" class="btn btn-block btn-warning text-white" (click)="forgotPwd()" [disabled]="f.invalid">Save</button>
+            <br> 
+            <div class="text-right">
+                <a href="#" (click)="moveToLogin()"><small>Go to login</small></a>
+            </div>       
+        </form>  
+    </div>
+</div>
+
+

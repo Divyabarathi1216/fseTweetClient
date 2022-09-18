@@ -1,0 +1,22 @@
+.user-reg{
+    padding:20px;
+    margin-top: 6%;
+    margin-left: 2%;
+    margin-right:2%;
+    background-color: white;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.reg-form{
+    border-radius: 5px;
+    padding-top:4%;
+    padding-left: 3%;
+    padding-right: 3%;
+    padding-bottom: 3%;
+    background-color: #8ab9f1;
+}
+
+.alertMsg{
+    color: red;
+    font-size: small;
+}

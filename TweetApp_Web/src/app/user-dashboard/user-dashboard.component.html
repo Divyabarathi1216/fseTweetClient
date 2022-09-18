@@ -1,0 +1,182 @@
+<div class="dash-model row">
+    <div class="col-3 right-bar text-center">
+        <div class="profile mt-2" *ngIf="loggedUser.picture">
+            <img [src]="loggedUser.picture" class="" width="130" height="110" alt="profile"/>
+        </div>
+        <div class="mt-1">{{loggedUser.firstName}} {{loggedUser.lastName}}</div>
+        <div>
+            <button class="btn btn-outline-primary btn-block mt-3" [ngClass]="{'barButton':isMyTweet}" (click)="GetUserTweet()">View my tweets</button>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary btn-block mt-2" [ngClass]="{'barButton':isAllTweets}" (click)="GetAllTweets()">View all tweets</button>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary btn-block mt-2 mb-2" [ngClass]="{'barButton':isEditProfile}" (click)="EditProfile()">Reset Password</button>
+        </div>
+    </div>
+    <div class="col-9 mb-4">
+        <div class="row">
+            <div class="col-6 mt-4">
+                <a class="logout-btn" (click)="AddTweet()">Add Tweet</a>
+            </div>
+            <div class="text-right col-6">
+                 <img src="/assets/Images/twitter-icon.gif" alt="logo" height="80" width="70">
+                 <a class="logout-btn" (click)="logout()">Logout</a>
+              </div>
+        </div>
+
+<!-- View My Tweets -->
+        <div *ngIf="isMyTweet">
+            <div class="row" *ngIf="isShowEmpty" else tweets>
+                <div class="col-12">Your tweet list is empty <i class="fa fa-frown-o" aria-hidden="true"></i>. Post your first tweet soon!</div>
+            </div>
+           <div *ngIf="!isShowEmpty" class="row">
+            <h6 class="col-12">Tweets</h6>
+                <div class="col-10" *ngFor="let item of myTweets">
+                    <div class="card mb-2">
+                        <div class="p-3">
+                            <div class="row">
+                                <div class="col-8">{{item.tweet}} <span>{{item.tag}}</span></div>
+                                <div class="col-4 text-right"><small>posted on <i>{{item.tweetCreatedDate | date:'shortDate' }}</i> </small></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    <small><a class="reply text-primary" *ngIf="!item.isShowReply" (click)="showReply(item)"><u>show replies</u></a></small>
+                                    <small><a class="reply text-primary" *ngIf="item.isShowReply" (click)="hideReply(item)"><u>hide replies</u></a></small>
+                                    <div *ngIf="item.isShowReply">
+                                        <div *ngFor="let reply of item.replyTweets">
+                                            <ul>
+                                                <li>
+                                                    <div class="profile">
+                                                        <img [src]="reply.user.picture" alt="profile" width="40" height="30"> &nbsp; &nbsp;<i>{{reply.user.loginId}}</i>
+                                                    </div>
+                                                    {{reply.replyTweet}}  <small>on <i>{{reply.replyTweetCreatedDate  | date:'shortDate'}}</i></small></li>
+                                            </ul>  
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                            <div class="row">
+                                <div class="col-8"><small><i class="fa fa-thumbs-up" aria-hidden="true"></i>{{item.likeCnt}}</small></div>
+                                <div class="col-4 text-right">
+                                    <a class="mr-3 text-white btn btn-sm btn-primary" (click)="updateTweet(item)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                                    <a class="btn text-white btn-sm btn-primary" (click)="deleteTweet(item.id)"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+           </div>
+        </div>
+
+<!-- View All Tweets -->
+        <div *ngIf="isAllTweets">
+            <!-- <div class="row" *ngIf="isShowEmpty" else tweets>
+                <div class="col-12">Your tweet list is empty <i class="fa fa-frown-o" aria-hidden="true"></i>. Post your first tweet soon!</div>
+            </div>*ngIf="!isShowEmpty" -->
+            <div class="row">
+                <form class="col-8" #f="ngForm" (ngSubmit)="reply()" *ngIf="isReply">
+                    <div>
+                        <h6>Reply to tweet</h6>
+                    </div>
+                    <br>
+                    <div class="form-group">    
+                        <textarea type="textarea" class="form-control" id="newTweet" placeholder="enter your tweet (max 144)" name="newTweet"
+                        row="2" cols="50"
+                        required
+                        maxlength="144"
+                        [(ngModel)]="replyModel.replyTweet"
+                        #tweetVal="ngModel"> </textarea> 
+                        <span class="alertMsg" *ngIf="!tweetVal.valid && tweetVal.touched">Please enter your tweet(It should be max 144 characters).</span>                
+                    </div>
+                    <div class="form-group">         
+                        <input type="text" class="form-control" id="tag" placeholder="enter tags(max 50)" name="tagVal"
+                        maxlength="50"
+                        [(ngModel)]="replyModel.tag"
+                        #tagVal="ngModel">   
+                        <span class="alertMsg" *ngIf="!tagVal.valid && tagVal.touched">It should be max 50 characters.</span>              
+                    </div>
+                    <button type="submit" class="btn btn-block btn-warning text-white" [disabled]="f.invalid">Reply</button>
+                    <br>   
+                </form>  
+            </div>
+            
+           <div  class="row">
+            <h6 class="col-12">Tweets</h6>
+                <div class="col-10" *ngFor="let item of allTweets">
+                    <div class="card mb-2">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-8 profile"> <img *ngIf="item.user.picture" [src]="item.user.picture" alt="profile" width="40" height="30"> &nbsp; &nbsp;<i>{{item.user.loginId}}</i></div>
+                                    <div class="col-4 text-right"><small><i>{{item.user.userLastSeen | date:'medium'}}</i></small></div>
+                                </div>
+                                
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-8">{{item.tweet}} <span>{{item.tag}}</span></div>
+                                    <div class="col-4 text-right"><small>posted on <i>{{item.tweetCreatedDate | date:'shortDate' }}</i> </small></div>
+                                </div>
+                                <div class="row ">
+                                    <div class="col-8">
+                                        <small><a class="reply text-primary" *ngIf="!item.isShowReply" (click)="showReply(item)"><u>show replies</u></a></small>
+                                        <small><a class="reply text-primary" *ngIf="item.isShowReply" (click)="hideReply(item)"><u>hide replies</u></a></small>
+                                        <div *ngIf="item.isShowReply">
+                                            <div *ngFor="let reply of item.replyTweets">
+                                                <ul>
+                                                    <li>
+                                                        <div class="profile">
+                                                            <img [src]="reply.user.picture" alt="profile" width="40" height="30"> &nbsp; &nbsp;<i>{{reply.user.loginId}}</i>
+                                                        </div>
+                                                        {{reply.replyTweet}}  <small>on <i>{{reply.replyTweetCreatedDate  | date:'shortDate'}}</i></small></li>
+                                                </ul>  
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </div>
+                                <div class="row ">
+                                    <div class="col-8"><small><a class="like" (click)="likeTweet(item)"><i class="fa fa-thumbs-up" aria-hidden="true"></i></a>{{item.likeCnt}}</small></div>
+                                    <div class="col-4 text-right"> <a class="btn text-white btn-sm btn-primary" (click)="replyToTweet(item)">Reply</a></div>
+                                </div>    
+                            </div>
+                    </div>
+                </div>
+           </div>
+        </div>
+
+<!-- Add Tweet -->
+        <div class="col-10" *ngIf="isAddTweet">
+            <app-add-tweet [userId]="loggedUser.id" [tweet]="addTweet" (showEvent)="showEvent($event)"></app-add-tweet>
+        </div>
+
+<!-- Reset password -->
+        <div class="col-10" *ngIf="isEditProfile">
+            <form #f="ngForm">
+                <div>
+                    <h4>Reset password</h4>
+                </div>
+                <br>
+                <div class="form-group">         
+                    <input type="password" class="form-control input-sm" id="pwd" placeholder="enter your new password" name="pwd"
+                    [(ngModel)]="passModel.password"
+                    #pwd="ngModel"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    required>     
+                    <span class="alertMsg" *ngIf="!pwd.valid && pwd.touched">Please enter valid password(It should contain atleast 8 characters with lowercase, uppercase and number).</span>           
+                </div>
+                <div class="form-group">         
+                    <input type="password" class="form-control input-sm" id="cPwd" placeholder="confirm your password" name="cPwd"
+                    [(ngModel)]="cPwd"
+                    (change)="checkPwdCPwd()"
+                    #conPwd="ngModel"
+                    required> 
+                    <span class="alertMsg" *ngIf="!conPwd.valid && conPwd.touched">Please enter valid confirm passowrd.</span> 
+                    <span></span>               
+                </div>
+                <br>
+                <button type="submit" class="btn btn-block btn-warning text-white" (click)="ResetPassword()" [disabled]="f.invalid">Reset</button>
+            </form>
+        </div>
+    </div> 
+</div>

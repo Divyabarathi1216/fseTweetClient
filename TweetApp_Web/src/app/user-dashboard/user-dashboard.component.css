@@ -1,0 +1,47 @@
+.dash-model{
+   /*padding:20px;*/
+    margin-top: 2%;
+    margin-left: 2%;
+    margin-right:2%;
+    margin-bottom: 6%;
+    height: auto;
+    background-color: white;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.logout-btn{
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top:3px;
+    padding-bottom: 3px;
+    background-color:gold;
+    height: 100px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}
+
+.profile img{
+    border-radius: 50%;
+}
+
+.right-bar{
+    padding-left: 20px;
+    padding-bottom: 10px;
+    background-color: #F0F0F0;
+}
+
+.reply{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+.barButton{
+    background-color: #0070ff;
+    color:white;
+}
+
+.like{
+    cursor: pointer;
+}

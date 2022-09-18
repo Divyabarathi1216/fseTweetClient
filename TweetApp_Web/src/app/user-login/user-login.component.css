@@ -1,0 +1,24 @@
+.login-model{
+    padding:20px;
+    margin-top: 4%;
+    margin-left: 5%;
+    margin-right:5%;
+    margin-bottom: 6%;
+    height: 470px;
+    background-color: white;
+    box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-form{
+    width: 700px;
+    border-radius: 5px;
+    padding-top:4%;
+    padding-left: 3%;
+    padding-right: 3%;
+    background-color: #8ab9f1;
+}
+
+.alertMsg{
+    color: red;
+    font-size: small;
+}
